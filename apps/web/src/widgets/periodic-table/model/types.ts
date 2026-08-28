@@ -5,21 +5,21 @@ export type TElement = {
   name: string;
   exists_in_nature: boolean;
   weight: number;
-  group: number;
+  group: number | null;
   period: number;
   row: number;
   aggregation?: 'gas' | 'solid' | 'liquid' | null;
   type: 'metal' | 'semimetal' | 'nonmetal';
   series: TSeries;
-  melting_temperature?: number;
-  boiling_temperature?: number;
-  density?: number;
-  radius?: number;
-  'half-life_period'?: number;
+  melting_temperature?: number | null;
+  boiling_temperature?: number | null;
+  density?: number | null;
+  radius?: number | null;
+  'half-life_period'?: number | null;
   'half-life_symbol'?: 'y' | 'm' | 'd' | 'h' | 's';
-  abundance_in_earth_crust?: number;
-  abundance_in_universe?: number;
-  electronegativity?: number;
+  abundance_in_earth_crust?: number | null;
+  abundance_in_universe?: number | null;
+  electronegativity?: number | null;
 };
 
 export type TSeries =
