@@ -3,7 +3,7 @@ import { type ReactNode, useEffect, useState } from 'react';
 import type { TElement, TPeriodicTable } from '@/widgets/periodic-table/model/types.ts';
 import { Element } from '@/widgets/periodic-table/element.tsx';
 import { cn } from '@/shared/lib/utils.ts';
-import { Drawer, DrawerClose, DrawerContent, DrawerFooter } from '@/shared/ui/drawer.tsx';
+import { Drawer, DrawerContent, DrawerFooter } from '@/shared/ui/drawer.tsx';
 import { Button } from '@/shared/ui/button.tsx';
 import { Minus, Plus } from 'lucide-react';
 import { useUnit } from 'effector-react';
@@ -365,9 +365,6 @@ export const PeriodicTable = () => {
             </div>
             <DrawerFooter>
               <Button>Submit</Button>
-              <DrawerClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DrawerClose>
             </DrawerFooter>
           </div>
         </DrawerContent>
