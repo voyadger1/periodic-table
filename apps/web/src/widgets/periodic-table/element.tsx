@@ -1,27 +1,48 @@
-import type { TElement, TSeries } from '@/widgets/periodic-table/model/types.ts';
+import type { TElement } from '@/widgets/periodic-table/model/types.ts';
 import { cn } from '@/shared/lib/utils.ts';
 import { useTranslation } from 'react-i18next';
+import { useUnit } from 'effector-react/effector-react.mjs';
+import { $viewMode } from '@/widgets/periodic-table/model/store.ts';
+import { VIEW_MODES } from './data/view-mode.ts';
+import { useMemo } from 'react';
 
 interface ElementProps {
   data: TElement;
   className?: string;
 }
 
-const COLORS_DEFAULT: Record<TSeries, string> = {
-  alkali_metals: 'rgb(208, 73, 73)',
-  alkaline_earth_metal: 'rgb(218, 146, 17)',
-  semimetal: 'rgb(102, 178, 201)',
-  transition_metal: 'rgb(149, 176, 215)',
-  post_transition_metal: 'rgb(127, 154, 217)',
-  nonmetal: 'rgb(121, 173, 38)',
-  noble_gas: 'rgb(232, 137, 213)',
-  halogen: 'rgb(211, 144, 122)',
-  lanthanide: 'rgb(110, 176, 157)',
-  actinide: 'rgb(81, 122, 110)',
-};
-
 export const Element = ({ data, className }: ElementProps) => {
   const { t } = useTranslation();
+  const [viewMode] = useUnit([$viewMode]);
+
+  const dataPrint = useMemo(() => {
+    if (viewMode === 'atom') {
+      return data.electronegativity;
+    }
+    if (viewMode === 'bolling') {
+      return data.boiling_temperature && `${data.boiling_temperature} °C`;
+    }
+    if (viewMode === 'density') {
+      return data.density && `${data.density} g/l`;
+    }
+    if (viewMode === 'earth') {
+      return data.abundance_in_earth_crust && `${data.abundance_in_earth_crust}%`;
+    }
+    if (viewMode === 'galaxy') {
+      return data.abundance_in_universe && `${data.abundance_in_universe}%`;
+    }
+    if (viewMode === 'halflife') {
+      return data['half-life_period'] && `${data['half-life_period']} ${data['half-life_symbol']}`;
+    }
+    if (viewMode === 'melting') {
+      return data.melting_temperature && `${data.melting_temperature} °C`;
+    }
+    if (viewMode === 'radius') {
+      return data.radius;
+    }
+
+    return data.weight;
+  }, [viewMode]);
 
   return (
     <div
@@ -32,11 +53,11 @@ export const Element = ({ data, className }: ElementProps) => {
         'transition-all duration-300',
         className
       )}
-      style={{ background: COLORS_DEFAULT[data.series] }}
+      style={{ background: VIEW_MODES[viewMode].getColor(data) }}
     >
       <span className={'text-[22px] font-extrabold'}>{data.name}</span>
       <span className={'text-[10px]'}>{t(`elements.${data.id}.fullname`)}</span>
-      <span className={'text-[10px] text-background'}>{data.weight}</span>
+      <span className={'text-[10px] text-background'}>{dataPrint ?? 'N/A'}</span>
 
       <span className={'absolute top-1 right-2 text-[12px]'}>{data.id}</span>
     </div>
