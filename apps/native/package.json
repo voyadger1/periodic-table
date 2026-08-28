@@ -1,0 +1,49 @@
+{
+  "name": "native",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start -c --go --offline",
+    "dev": "expo start --web",
+    "build:web": "cd ../web && npm run build",
+    "copy:web": "rm -rf ./android/app/src/main/assets/web && mkdir -p ./android/app/src/main/assets/web && cp -r ../web/dist/* ./android/app/src/main/assets/web/",
+    "prebuild:mobile": "npm run build:web && npm run copy:web",
+    "android:dev": "npm run prebuild:mobile && source ~/.zshrc && expo run:android",
+    "android:release": "npm run prebuild:mobile && source ~/.zshrc && expo run:android --variant release",
+    "android:build:apk": "npm run prebuild:mobile && source ~/.zshrc && cd android && ./gradlew assembleRelease && cd ..",
+    "android:build:aab": "npm run prebuild:mobile && source ~/.zshrc && cd android && ./gradlew bundleRelease && cd ..",
+    "android:clean": "source ~/.zshrc && cd android && ./gradlew clean && cd ..",
+    "ios:dev": "expo run:ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "@repo/ui": "*",
+    "expo": "^55.0.4",
+    "expo-constants": "~55.0.7",
+    "expo-file-system": "^55.0.22",
+    "expo-linking": "~55.0.7",
+    "expo-router": "~55.0.3",
+    "expo-status-bar": "~55.0.4",
+    "expo-system-ui": "~55.0.9",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "react-native": "0.83.2",
+    "react-native-safe-area-context": "~5.6.2",
+    "react-native-screens": "~4.23.0",
+    "react-native-web": "^0.21.0",
+    "react-native-webview": "^13.16.1"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.10",
+    "typescript": "5.9.2"
+  },
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "listUnknownPackages": false
+      }
+    }
+  }
+}
