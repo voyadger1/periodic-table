@@ -14,6 +14,7 @@ import {
   setElementSelected,
 } from './model/store.ts';
 import { useTranslation } from 'react-i18next';
+import { ViewMode } from './ui/view-mode.tsx';
 
 const NumberElement = ({ children, className }: { children: ReactNode; className?: string }) => {
   return (
@@ -93,6 +94,9 @@ export const PeriodicTable = () => {
               </div>
             </>
           )}
+          <div className={'flex-1'} />
+
+          <ViewMode />
         </div>
         {/* Числа слева */}
         <div className={cn('absolute top-0 left-0 w-4 h-full pt-4', 'flex flex-col gap-0')}>

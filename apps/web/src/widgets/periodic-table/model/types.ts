@@ -33,3 +33,14 @@ export type TSeries =
   | 'semimetal'
   | 'lanthanide'
   | 'nonmetal';
+
+export type TViewMode =
+  | 'atom'
+  | 'bolling'
+  | 'density'
+  | 'earth'
+  | 'galaxy'
+  | 'halflife'
+  | 'heatmaps'
+  | 'melting'
+  | 'radius';
