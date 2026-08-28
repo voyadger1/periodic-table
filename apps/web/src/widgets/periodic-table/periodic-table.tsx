@@ -3,15 +3,7 @@ import { type ReactNode, useEffect, useState } from 'react';
 import type { TElement, TPeriodicTable } from '@/widgets/periodic-table/model/types.ts';
 import { Element } from '@/widgets/periodic-table/element.tsx';
 import { cn } from '@/shared/lib/utils.ts';
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-} from '@/shared/ui/drawer.tsx';
+import { Drawer, DrawerClose, DrawerContent, DrawerFooter } from '@/shared/ui/drawer.tsx';
 import { Button } from '@/shared/ui/button.tsx';
 import { Minus, Plus } from 'lucide-react';
 import { useUnit } from 'effector-react';

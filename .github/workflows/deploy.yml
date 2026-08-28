@@ -1,0 +1,48 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master   # триггер на пуш в ветку master
+
+# Разрешаем запись в репозиторий (нужно для создания/обновления ветки gh-pages)
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Клонируем репозиторий
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Устанавливаем Node.js (используйте версию, которая у вас в проекте)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      # 3. Устанавливаем зависимости в корне монорепозитория
+      #    Если у вас настроены workspaces, npm установит все зависимости для всех пакетов
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Собираем именно приложение из папки apps/web
+      #    Предполагаем, что в apps/web/package.json есть скрипт "build": "vite build"
+      - name: Build web app
+        run: npm run build --workspace=apps/web
+        # Если не используете npm workspaces, замените на:
+        # run: cd apps/web && npm run build
+
+      # 5. Деплоим собранные файлы в ветку gh-pages
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./apps/web/dist   # путь к папке со сборкой Vite
+          publish_branch: gh-pages       # целевая ветка
+          # Если нужно сохранить историю коммитов в gh-pages, добавьте:
+          # keep_files: false
