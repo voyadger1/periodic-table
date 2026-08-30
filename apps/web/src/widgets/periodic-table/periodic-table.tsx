@@ -3,18 +3,11 @@ import { type ReactNode, useEffect, useState } from 'react';
 import type { TElement, TPeriodicTable } from '@/widgets/periodic-table/model/types.ts';
 import { Element } from '@/widgets/periodic-table/element.tsx';
 import { cn } from '@/shared/lib/utils.ts';
-import { Drawer, DrawerContent, DrawerFooter } from '@/shared/ui/drawer.tsx';
-import { Button } from '@/shared/ui/button.tsx';
-import { Minus, Plus } from 'lucide-react';
 import { useUnit } from 'effector-react';
-import {
-  $elementHover,
-  $elementSelected,
-  setElementHover,
-  setElementSelected,
-} from './model/store.ts';
-import { useTranslation } from 'react-i18next';
+import { $elementHover, $viewMode, setElementHover, setElementSelected } from './model/store.ts';
 import { ViewMode } from './ui/view-mode.tsx';
+import { AtomDetail } from '@/widgets/periodic-table/ui/atom-detail.tsx';
+import { COLORS_DEFAULT } from '@/widgets/periodic-table/data/view-mode.ts';
 
 const NumberElement = ({ children, className }: { children: ReactNode; className?: string }) => {
   return (
@@ -30,8 +23,7 @@ const NumberElement = ({ children, className }: { children: ReactNode; className
 };
 
 export const PeriodicTable = () => {
-  const { t } = useTranslation();
-  const [elementHover, elementSelected] = useUnit([$elementHover, $elementSelected]);
+  const [elementHover, viewMode] = useUnit([$elementHover, $viewMode]);
   const DATA: TPeriodicTable = PERIODIC_TABLE_DATA as TPeriodicTable;
   const [openDetails, setOpenDetails] = useState(false);
 
@@ -67,7 +59,11 @@ export const PeriodicTable = () => {
         <div className={cn('absolute top-[13%] left-[14%] w-[49%] h-[15%]', 'flex flex-row gap-4')}>
           {elementHover && (
             <>
-              <div className={'aspect-square rounded-md overflow-hidden h-full'}>
+              <div
+                className={
+                  'aspect-square rounded-md overflow-hidden h-[70%] scale-150 mt-5 mr-5 ml-2'
+                }
+              >
                 <Element data={elementHover} />
               </div>
 
@@ -313,66 +309,81 @@ export const PeriodicTable = () => {
         </div>
       </div>
 
-      <Drawer open={openDetails} onOpenChange={setOpenDetails}>
-        <DrawerContent className={'w-full'}>
-          <div className="w-full overflow-y-auto">
-            {/*<DrawerHeader>*/}
-            {/*  <DrawerTitle>Move Goal</DrawerTitle>*/}
-            {/*  <DrawerDescription>Set your daily activity goal.</DrawerDescription>*/}
-            {/*</DrawerHeader>*/}
+      <div className={'flex flex-col w-full mt-8 gap-4'}>
+        <span className={'text-[20pt] font-bold'}>Типы элементов</span>
 
-            {elementSelected && (
-              <div className={'w-full flex flex-col px-4 relative'}>
-                <span className={'absolute top-4 left-4 text-[18pt] font-extralight'}>
-                  {elementSelected.id}
-                </span>
+        <div className={'grid grid-cols-4 gap-2 w-full'}>
+          {(
+            [
+              {
+                title: 'Щёлочные металлы',
+                color: COLORS_DEFAULT.alkali_metals,
+                link: 'https://en.wikipedia.org/wiki/Alkali_metal',
+              },
+              {
+                title: 'Переходный металл',
+                color: COLORS_DEFAULT.transition_metal,
+                link: 'https://en.wikipedia.org/wiki/Transition_metal',
+              },
+              {
+                title: 'Благородный газ',
+                color: COLORS_DEFAULT.noble_gas,
+                link: 'https://en.wikipedia.org/wiki/Noble_gas',
+              },
+              {
+                title: 'Лантаноид',
+                color: COLORS_DEFAULT.lanthanide,
+                link: 'https://en.wikipedia.org/wiki/Lanthanide',
+              },
+              {
+                title: 'Щелочноземельный металл',
+                color: COLORS_DEFAULT.alkaline_earth_metal,
+                link: 'https://en.wikipedia.org/wiki/Alkaline_earth_metal',
+              },
+              {
+                title: 'Пост-переходный металл',
+                color: COLORS_DEFAULT.post_transition_metal,
+                link: 'https://en.wikipedia.org/wiki/Post-transition_metal',
+              },
+              {
+                title: 'Галоген',
+                color: COLORS_DEFAULT.halogen,
+                link: 'https://en.wikipedia.org/wiki/Halogen',
+              },
+              {
+                title: 'Актиноид',
+                color: COLORS_DEFAULT.actinide,
+                link: 'https://en.wikipedia.org/wiki/Actinide',
+              },
+              {
+                title: 'Полуметалл',
+                color: COLORS_DEFAULT.semimetal,
+                link: 'https://en.wikipedia.org/wiki/Metalloid',
+              },
+              {
+                title: 'Неметалл',
+                color: COLORS_DEFAULT.nonmetal,
+                link: 'https://en.wikipedia.org/wiki/Nonmetal',
+              },
+            ] as { title: string; link: string; color: string }[]
+          ).map((item, index) => (
+            <a
+              key={index}
+              href={item.link}
+              className={'flex flex-row gap-2 items-center'}
+              target={'_blank'}
+            >
+              {viewMode === 'heatmaps' && (
+                <div className={'w-[40px] h-[14px]'} style={{ background: item.color }} />
+              )}
 
-                <span className={'font-extrabold text-[120pt]'}>{elementSelected.name}</span>
-                <span className={'text-[35pt]'}>
-                  {t(`elements.${elementSelected.id}.fullname`)}
-                </span>
-                <span className={'text-[25pt] font-light text-foreground/60'}>
-                  {elementSelected.weight}
-                </span>
+              {item.title}
+            </a>
+          ))}
+        </div>
+      </div>
 
-                <p>{t(`elements.${elementSelected.id}.description`)}</p>
-              </div>
-            )}
-
-            <div className="p-4 pb-0">
-              <div className="flex items-center justify-center space-x-2">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-8 w-8 shrink-0 rounded-full"
-                  onClick={() => {}}
-                  // disabled={goal <= 200}
-                >
-                  <Minus />
-                  <span className="sr-only">Decrease</span>
-                </Button>
-                <div className="flex-1 text-center">
-                  <div className="text-7xl font-bold tracking-tighter">{10}</div>
-                  <div className="text-[0.70rem] text-muted-foreground uppercase">Calories/day</div>
-                </div>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-8 w-8 shrink-0 rounded-full"
-                  onClick={() => {}}
-                  // disabled={goal >= 400}
-                >
-                  <Plus />
-                  <span className="sr-only">Increase</span>
-                </Button>
-              </div>
-            </div>
-            <DrawerFooter>
-              <Button>Submit</Button>
-            </DrawerFooter>
-          </div>
-        </DrawerContent>
-      </Drawer>
+      <AtomDetail open={openDetails} onOpenChange={setOpenDetails} />
     </>
   );
 };

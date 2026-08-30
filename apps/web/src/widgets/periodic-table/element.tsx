@@ -42,7 +42,7 @@ export const Element = ({ data, className }: ElementProps) => {
     }
 
     return data.weight;
-  }, [viewMode]);
+  }, [viewMode, data]);
 
   return (
     <div
