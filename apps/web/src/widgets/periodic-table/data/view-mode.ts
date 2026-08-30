@@ -15,7 +15,7 @@ export type TViewModeData = {
   getColor: (element: TElement) => string;
 };
 
-const COLORS_DEFAULT: Record<TSeries, string> = {
+export const COLORS_DEFAULT: Record<TSeries, string> = {
   alkali_metals: 'rgb(208, 73, 73)',
   alkaline_earth_metal: 'rgb(218, 146, 17)',
   semimetal: 'rgb(102, 178, 201)',
