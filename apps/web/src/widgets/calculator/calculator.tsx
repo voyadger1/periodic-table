@@ -56,8 +56,8 @@ const parserCompoundsCSV = async (): Promise<CompoundData[]> => {
       compounds = result.data;
       console.log('Загружено записей:', result.data.length);
     },
-    error: (error) => {
-      console.error('Ошибка парсинга CSV:', error);
+    error: () => {
+      console.error('Ошибка парсинга CSV');
     },
   });
 
