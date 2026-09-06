@@ -1,5 +1,5 @@
 import PERIODIC_TABLE_DATA from './data/periodic-table.json';
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import type { TElement, TPeriodicTable } from '@/widgets/periodic-table/model/types.ts';
 import { Element } from '@/widgets/periodic-table/element.tsx';
 import { cn } from '@/shared/lib/utils.ts';
@@ -8,6 +8,7 @@ import { $elementHover, $viewMode, setElementHover, setElementSelected } from '.
 import { ViewMode } from './ui/view-mode.tsx';
 import { AtomDetail } from '@/widgets/periodic-table/ui/atom-detail.tsx';
 import { COLORS_DEFAULT } from '@/widgets/periodic-table/data/view-mode.ts';
+import '@molviewer/core/style.css';
 
 const NumberElement = ({ children, className }: { children: ReactNode; className?: string }) => {
   return (
@@ -41,11 +42,6 @@ export const PeriodicTable = () => {
       </div>
     );
   };
-
-  useEffect(() => {
-    setElementHover(DATA['1']);
-    console.log('PERIODIC_TABLE_DATA: ', DATA['10'].name);
-  }, []);
 
   return (
     <>
@@ -131,7 +127,7 @@ export const PeriodicTable = () => {
         {/* Элементы */}
         <div className={'flex flex-row gap-0'}>
           <ElementBox data={DATA['1']} className={'rounded-t-sm'} />
-          <div className={'flex-1 h-full relative'}>
+          <div className={'flex-1 h-full relative pointer-events-none'}>
             <div className={'absolute bottom-0 left-0 w-full flex flex-row'}>
               <NumberElement>2</NumberElement>
               <div className={'flex-1'} />
@@ -170,7 +166,7 @@ export const PeriodicTable = () => {
           <ElementBox data={DATA['11']} />
           <ElementBox data={DATA['12']} />
 
-          <div className={'flex-1 h-full relative'}>
+          <div className={'flex-1 h-full relative pointer-events-none'}>
             <div className={'absolute bottom-0 left-0 w-full flex flex-row'}>
               <NumberElement>3</NumberElement>
               <NumberElement>4</NumberElement>
