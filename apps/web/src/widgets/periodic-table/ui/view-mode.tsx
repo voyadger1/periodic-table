@@ -44,22 +44,29 @@ export const ViewMode = () => {
         <div
           onClick={() => setIsOpen(true)}
           className={cn(
-            'aspect-square h-full rounded-sm p-4 cursor-pointer',
+            'aspect-square h-[130%] rounded-sm p-4 cursor-pointer z-1',
             'bg-white/5 hover:bg-white/10',
             'flex flex-col justify-center items-center gap-2',
             'text-[12px] text-center font-light'
           )}
         >
-          <img
-            src={VIEW_MODES[viewMode].img}
-            alt={VIEW_MODES[viewMode].title}
-            className={'w-[70%] h-[70%] object-contain'}
-          />
+          <div
+            className={
+              'absolute top-0 left-0 w-full h-[130%] flex flex-col gap-1 items-center justify-center'
+            }
+          >
+            <img
+              src={VIEW_MODES[viewMode].img}
+              alt={VIEW_MODES[viewMode].title}
+              className={'w-[40%] h-[40%] object-contain'}
+            />
+            <span className={'text-[10px] w-full text-white/70'}>{VIEW_MODES[viewMode].title}</span>
+          </div>
         </div>
 
         <div
           className={cn(
-            'absolute top-[-100%] left-[-100%] w-[300%] h-[300%] z-1',
+            'absolute top-[-100%] left-[-100%] w-[300%] h-[300%] z-[10]',
             'grid grid-cols-3 grid-rows-3',
             'pointer-events-none opacity-0 scale-70 bg-[#151515] rounded-sm',
             'transition-all duration-100',

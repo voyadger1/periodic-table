@@ -14,4 +14,7 @@ export default defineConfig({
     },
     dedupe: ['react', 'react-dom'],
   },
+  optimizeDeps: {
+    include: ['@nam088/chemical-balancer'],
+  },
 });
