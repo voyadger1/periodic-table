@@ -44,7 +44,7 @@ interface CompoundData {
 }
 
 const parserCompoundsCSV = async (): Promise<CompoundData[]> => {
-  const csvFilePath = '/data/compounds.csv';
+  const csvFilePath = './data/compounds.csv';
   const csvFile = await (await fetch(csvFilePath)).text();
   let compounds: CompoundData[] = [];
 
